@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1704.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I8FlightParser", "I8FlightParser\I8FlightParser.csproj", "{2892F955-B850-49B1-AA47-7711AA1BA6F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I8FlightParser.Services", "I8FlightParser.Services\I8FlightParser.Services.csproj", "{E0E85246-545B-4391-A107-DDF5F084E8C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I8FlightParser.Abstract", "I8FlightParser.Abstract\I8FlightParser.Abstract.csproj", "{8003DC8D-234D-405F-9343-663B3C04B347}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "I8FlightParser.Data", "I8FlightParser.Data\I8FlightParser.Data.csproj", "{AF924CAC-5424-40D7-88E8-44C07FA0468E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2892F955-B850-49B1-AA47-7711AA1BA6F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2892F955-B850-49B1-AA47-7711AA1BA6F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2892F955-B850-49B1-AA47-7711AA1BA6F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2892F955-B850-49B1-AA47-7711AA1BA6F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0E85246-545B-4391-A107-DDF5F084E8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0E85246-545B-4391-A107-DDF5F084E8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0E85246-545B-4391-A107-DDF5F084E8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0E85246-545B-4391-A107-DDF5F084E8C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8003DC8D-234D-405F-9343-663B3C04B347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8003DC8D-234D-405F-9343-663B3C04B347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8003DC8D-234D-405F-9343-663B3C04B347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8003DC8D-234D-405F-9343-663B3C04B347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF924CAC-5424-40D7-88E8-44C07FA0468E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF924CAC-5424-40D7-88E8-44C07FA0468E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF924CAC-5424-40D7-88E8-44C07FA0468E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF924CAC-5424-40D7-88E8-44C07FA0468E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBDD72FB-8294-4810-9BA0-4CD68AC5E9A1}
+	EndGlobalSection
+EndGlobal
