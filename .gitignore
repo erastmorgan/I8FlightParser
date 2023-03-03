@@ -232,11 +232,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-/I8FlightParser.Abstract/bin/
-/I8FlightParser.Abstract/obj/
-/I8FlightParser.Data/bin/
-/I8FlightParser.Data/obj/
-/I8FlightParser.Services/bin/
-/I8FlightParser.Services/obj/
-/I8FlightParser/bin/
-/I8FlightParser/obj/
