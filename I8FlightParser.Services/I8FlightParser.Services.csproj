@@ -14,5 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\I8FlightParser.Abstract\I8FlightParser.Abstract.csproj" />
+    <ProjectReference Include="..\I8FlightParser.Data\I8FlightParser.Data.csproj" />
   </ItemGroup>
 </Project>

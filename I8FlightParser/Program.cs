@@ -1,9 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using I8FlightParser;
 using I8FlightParser.Abstract;
+using I8FlightParser.Data;
 using I8FlightParser.Data.Flights;
 using Newtonsoft.Json;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 
 var searchCriteries = new ISearchCriteria[]
 {
@@ -23,8 +27,31 @@ var searchCriteries = new ISearchCriteria[]
     }
 };
 
+var telegramKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "telegram_key.json");
+if (!System.IO.File.Exists(telegramKeyPath))
+{
+    await System.IO.File.WriteAllTextAsync(telegramKeyPath, JsonConvert.SerializeObject(new TelegramKey()));
+}
+
+var telegramKey = JsonConvert.DeserializeObject<TelegramKey>(await System.IO.File.ReadAllTextAsync(telegramKeyPath));
+var bot = new TelegramBotClient(telegramKey.Token);
+
+Func<I8Segment, I8Price, string> getFlightStrFormatted = (flightInfo, priceInfo) =>
+{
+    var flightStr = $"{flightInfo.DepartureDate} {flightInfo.DepartureTime}: " +
+        $"{flightInfo.OriginPort} - {flightInfo.DestinationPort}";
+
+    var currencyStr = $": {priceInfo.Price} {priceInfo.Currency}";
+
+    var seatsStr = priceInfo.Available < 9 ? $": number of seats is {priceInfo.Available}" : string.Empty;
+
+    return $"{flightStr}{currencyStr}{seatsStr}";
+};
+
 while (true)
 {
+    var resultTextBuilder = new StringBuilder();
+
     var searchService = new I8FlightSearchService();
     foreach (I8SearchCriteria searchCriteria in searchCriteries)
     {
@@ -40,9 +67,9 @@ while (true)
         var routeStr = $"{searchCriteria.DepartureIata} - {searchCriteria.ArrivalIata}";
 
         var header = $"-------- last update {DateTime.Now}: date {dateStr}: route {routeStr} --------";
-        Console.WriteLine(header);
+        resultTextBuilder.AppendLine(header);
 
-        var cheapestVariants = new List<(string Flight, decimal Price)>();
+        var cheapestVariants = new List<(string Flight, I8Price Price)>();
 
         var chains = searchResult.Flights.OrderBy(x =>
             DateTime.ParseExact(x.Segments.First().DepartureDate, "dd.MM.yyyy", CultureInfo.InvariantCulture));
@@ -51,40 +78,43 @@ while (true)
         {
             foreach (var flight in chain.Segments)
             {
-                var flightStr = $"{flight.DepartureDate} {flight.DepartureTime}: " +
-                    $"{flight.OriginPort} - {flight.DestinationPort}";
-
                 var prices = searchResult.Prices.First(x => x.ContainsKey(flight.Id)).SelectMany(x => x.Value)
                     .OrderBy(x => x.Price);
                 foreach (var price in prices)
                 {
-                    Console.WriteLine($"{flightStr}: {price.Price} RUB");
+                    resultTextBuilder.AppendLine(getFlightStrFormatted(flight, price));
                 }
-
-                var cheapestPrice = prices.First().Price;
-                cheapestVariants.Add(($"{flightStr}: {cheapestPrice} RUB", cheapestPrice));
+                
+                var cheapestPrice = prices.First();
+                cheapestVariants.Add((getFlightStrFormatted(flight, cheapestPrice), cheapestPrice));
             }
 
             if (searchResult.Flights.Count > 1)
             {
-                Console.WriteLine();
+                resultTextBuilder.AppendLine();
             }
         }
 
-        Console.WriteLine();
-        Console.WriteLine("Cheapest variants:");
+        resultTextBuilder.AppendLine();
+        resultTextBuilder.AppendLine("Cheapest variants:");
 
         foreach (var variant in cheapestVariants)
         {
-            Console.WriteLine(variant.Flight);
+            resultTextBuilder.AppendLine(variant.Flight);
         }
 
-        Console.WriteLine($"Total sum: {cheapestVariants.Sum(x => x.Price)} RUB");
+        resultTextBuilder.AppendLine(
+            $"Total sum: {cheapestVariants.Sum(x => x.Price.Price)} {cheapestVariants[0].Price.Currency}");
 
-        Console.WriteLine(new string('-', header.Length));
-        Console.WriteLine();
+        resultTextBuilder.AppendLine(new string('-', header.Length));
+        resultTextBuilder.AppendLine();
     }
 
+    var result = resultTextBuilder.ToString();
+    Console.Write(result);
+
+    await bot.SendTextMessageAsync(telegramKey.ChanelId, result);
+    
     // 6 hours * 3600 sec * 1000ms.
     await Task.Delay(6 * 3600 * 1000);
 }
