@@ -5,6 +5,8 @@ namespace I8FlightParser.Data.Flights
 {
     public class I8SearchCriteria : ISearchCriteria
     {
+        public Guid SearchId { get; } = Guid.NewGuid();
+
         public string SearchGroupId { get; set; } = "standard";
 
         public int SegmentsCount => ReturnDate.HasValue ? 2 : 1;
